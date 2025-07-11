@@ -11,3 +11,5 @@ follow nativewind docs
 ## Important notes
 
 - you can define colors for tailwind by adding "colors: {ex1: #FFFFFF, ex2...}" to "extend" in tailwind.config.js
+
+- 
