@@ -3,6 +3,7 @@ import SearchBar from '@/components/SearchBar'
 import { icons } from '@/constants/icons'
 import { images } from '@/constants/images'
 import { fetchMovies } from '@/services/api'
+import { updateSearchCount } from '@/services/appwrite'
 import useFetch from '@/services/useFetch'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
@@ -19,15 +20,21 @@ const search = () => {
     = useFetch(() => fetchMovies({ query: searchQuery }), false)
 
   useEffect(() => {
-
-    const func = async () => {
+    const timeoutId = setTimeout(async () => {
       if (searchQuery.trim()) {
-        await loadMovies()
+        await loadMovies();
+
+        
+        if (movies?.length! > 0 && movies?.[0]) {
+          await updateSearchCount(searchQuery, movies[0]);
+        }
+      } else {
+        reset();
       }
-      else { reset() }
-    }
-    func()
-  }, [searchQuery])
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
   return (
     <View className='flex-1 bg-primary'>
       <Image source={images.bg} className='flex-1 absolute w-full z-0' resizeMode='cover' />
@@ -73,6 +80,15 @@ const search = () => {
 
             )}
           </>
+        }
+        ListEmptyComponent={
+          !moviesLoading && !moviesError ?(
+            <View className='mt-10 px-5'>
+              <Text className='text-center text-gray-500'> 
+                {searchQuery.trim() ? 'No results found' : 'Search for movies '}
+              </Text>
+              </View>
+          ) : null
         }
       />
 
