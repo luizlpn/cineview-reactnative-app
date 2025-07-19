@@ -7,14 +7,7 @@ import { fetchMovies } from "@/services/api";
 import { getTrendingMovies } from "@/services/appwrite";
 import useFetch from "@/services/useFetch";
 import { useRouter } from "expo-router";
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import {ActivityIndicator, FlatList, Image, ScrollView, Text, View,} from "react-native";
 const Index = () => {
   const router = useRouter();
 
